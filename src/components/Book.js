@@ -7,7 +7,9 @@ const Book = (props) => {
             <div className="book">
                 <div className="book-top">
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${props.cover})` }}></div>
-                    <BookshelfChanger />
+                    <BookshelfChanger 
+                        currentBookshelf={props.currentBookshelf} 
+                        updateBookshelf={props.updateBookshelf} />
                 </div>
                 <div className="book-title">{props.title}</div>
                 <div className="book-authors">{props.authors.join(' ')}</div>

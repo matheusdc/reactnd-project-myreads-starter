@@ -3,8 +3,8 @@ import { Route, Link } from 'react-router-dom'
 
 import * as BooksAPI from './BooksAPI'
 
-import SearchBar from './components/SearchBar';
-import Bookshelf from './components/Bookshelf';
+import SearchBar from './components/SearchBar'
+import Bookshelf from './components/Bookshelf'
 
 import './App.css'
 
@@ -21,6 +21,23 @@ class BooksApp extends React.Component {
       return (book.shelf === shelf)
     })
   }
+
+  takeBookFromShelf = (updatedBook, shelf) => {
+    return this.state[shelf].filter(book => updatedBook.id !== book.id)
+  }
+
+  updateBookshelf = (evt, book) => {
+    const shelf = evt.target.value
+
+    BooksAPI.update(book, shelf).then((result) => {
+      const updatedShelfs = {};
+      updatedShelfs[book.shelf] = this.takeBookFromShelf(book, book.shelf);
+      updatedShelfs[shelf] = this.state[shelf].concat([book])
+      book.shelf = shelf;
+      this.setState(updatedShelfs)
+    })
+  }
+  
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
@@ -43,9 +60,12 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Bookshelf title="Currently Reading" books={this.state.currentlyReading} />
-                <Bookshelf title="Want to Read" books={this.state.wantToRead} />
-                <Bookshelf title="Read" books={this.state.read} />
+                <Bookshelf title="Currently Reading" books={this.state.currentlyReading} 
+                  updateBookshelf={this.updateBookshelf}/>
+                <Bookshelf title="Want to Read" books={this.state.wantToRead}
+                  updateBookshelf={this.updateBookshelf} />
+                <Bookshelf title="Read" books={this.state.read} 
+                  updateBookshelf={this.updateBookshelf} />
               </div>
             </div>
             <div className="open-search">
