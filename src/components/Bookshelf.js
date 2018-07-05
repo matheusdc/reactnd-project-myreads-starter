@@ -11,7 +11,7 @@ const Bookshelf = (props) => {
             (<Book key={book.id}
               title={book.title}
               authors={(book.authors) ? book.authors : ['']}
-              cover={book.imageLinks.smallThumbnail}
+              cover={(book.imageLinks) ? book.imageLinks.smallThumbnail : ''}
               currentBookshelf={book.shelf}
               updateBookshelf={evt => props.updateBookshelf(evt, book)} />)
           )}

@@ -79,6 +79,7 @@ class BooksApp extends React.Component {
         this.setState({ searchResults });
       })
     }
+    this.setState({ searchResults: [] });
   }
 
   componentDidMount() {
